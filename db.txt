@@ -1,0 +1,65 @@
+
+Q1:
+Who written the most rock songs?
+SQL:
+
+SELECT Artist.ArtistId   AS artistId,
+       Artist.Name       AS name,
+       COUNT(Track.Name) AS Songs 
+  FROM Artist JOIN Album 
+    ON Album.ArtistId = Artist.ArtistId JOIN Track 
+    ON Album.AlbumId = Track.AlbumId JOIN Genre 
+    ON Track.GenreId = Genre.GenreId 
+ WHERE Genre.Name = 'Rock' 
+GROUP BY Artist.ArtistId,
+       Artist.Name,
+       Genre.Name 
+ORDER BY Songs DESC 
+ LIMIT 10;
+
+Q2:
+The customer who has spent the most money will be declared the best customer. 
+
+sql:
+select c.CustomerId,
+c.FirstName,
+c.LastName,
+sum(inv.UnitPrice) as invoices
+from Invoice i
+join InvoiceLine inv
+on inv.Invoiceid = i.Invoiceid
+join customer c
+on c.customerid = i.customerid
+group by c.CustomerId,c.FirstName,c.LastName
+order by invoices desc
+limit 5
+
+Q3:
+ The Most-Purchased Song Genre ?
+
+sql:
+SELECT 
+	a.Name as genre_type
+	,count(*) as num_purchases
+FROM Genre a
+INNER JOIN Track b
+	on a.GenreId = b.GenreId
+INNER JOIN InvoiceLine c
+	on b.TrackId = c.TrackId
+GROUP BY a.Name
+ORDER BY num_purchases DESC;
+
+Q4:
+
+ Top 5 Artists Who Have Recorded Most Albums?
+
+sql:
+SELECT
+	a.Name as artist_name
+	,count (b.Title) as total_album
+FROM Artist a
+INNER JOIN Album b
+	on a.ArtistId = b.ArtistId
+GROUP BY a.Name
+ORDER BY total_album DESC
+LIMIT 5;
